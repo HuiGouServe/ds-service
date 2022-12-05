@@ -7,11 +7,14 @@
 maven： 3.3.9版本；
 
 下载nacos： git clone https://github.com/alibaba/nacos.git
-nacos 文档： https://nacos.io/zh-cn/docs/v2/quickstart/quick-start.html
 
-本地启动命令： startup.cmd -m standalone
+nacos文档： https://nacos.io/zh-cn/docs/v2/quickstart/quick-start.html
 
-运行sql问价下的两个sql文件
+nacos本地启动命令： startup.cmd -m standalone
+
+运行sql问价下的两个sql文件到mysql中
+
+安装redis 客户端
 
 依赖下载完成后启动，小伙伴们不懂的地方可以留言讨论，一起学习进步！
 
