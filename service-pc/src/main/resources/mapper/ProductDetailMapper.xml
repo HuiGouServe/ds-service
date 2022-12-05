@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pingan.Mapper.ProductDetailMapper">
+    <select id="selectAllByProductDetail" parameterType="String" resultType="com.pingan.Object.ProductDetail">
+        select pd.*, pp.* from `product_detail` pd,`product_price` pp where
+        pd.product_id = #{id} and pd.product_id=pp.product_id;
+        -- SELECT
+        -- `product_detail`.*, `product_price`.*
+        -- FROM
+        -- `product_detail`
+        -- INNER JOIN `product_price` ON `product_detail`.RlsPK = PM_ACT_RLS.RlsPK
+
+    </select>
+
+
+</mapper>

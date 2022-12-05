@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pingan.Mapper.UserLoginMapper">
+<select id="selectUserLoginByphone" parameterType="String" resultType="com.pingan.Object.UserLogin">
+        select * from `user_login` where phone = #{phone}
+    </select>
+<!--    <select id="selectUserLoginByaccount" parameterType="String" resultType="com.pingan.Object.UserLogin">-->
+<!--        select user_account  from `user_login` where user_account = #{account}-->
+<!--    </select>-->
+
+</mapper>
