@@ -26,27 +26,23 @@ public class TokenInterceptor implements HandlerInterceptor {
                              HttpServletResponse httpServletResponse,
                              Object object) throws Exception {
 
-        // 地址过滤
-//        String uri = httpServletRequest.getRequestURI() ;
-//        if (uri.contains("/login")){
-//            return true ;
-//        }
-
-//        String token = httpServletRequest.getHeader("token");
-//        if(!StringUtils.hasText(token)){
-//            throw new Exception("token不能为空");  // new Result().fail("token不能为空");
-//        }
-//        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(token);
-////        System.out.println(claimsJws);
-//        String id = (String) claimsJws.getBody().get("id");
-//        String s = stringRedisTemplate.opsForValue().get(id);
-////        System.out.println(id);
-////        System.out.println(s);
-//        if(!StringUtils.hasText(s)){
-//            throw new Exception("token失效或不存在");
-//        }else {
-//            stringRedisTemplate.opsForValue().set(id, token, 1800, TimeUnit.SECONDS);
-//        }
-        return true;
+         //地址过滤
+        String uri = httpServletRequest.getRequestURI() ;
+        if (uri.contains("/login")){
+            return true ;
+        }
+        String token = httpServletRequest.getHeader("token");
+        if(!StringUtils.hasText(token)){
+            throw new Exception("token不能为空");
+        }
+        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(token);
+        String id = (String) claimsJws.getBody().get("id");
+        String s = stringRedisTemplate.opsForValue().get(id);
+        if(!StringUtils.hasText(s)){
+            throw new Exception("token失效或不存在");
+        }else {
+            stringRedisTemplate.opsForValue().set(id, token, 1800, TimeUnit.SECONDS);
+            return true;
+        }
     }
 }

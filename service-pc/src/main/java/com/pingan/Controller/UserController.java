@@ -76,10 +76,11 @@ public class UserController {
             return new Result().fail("验证码已过期或不存在");
         }
         UserLogin user = userService.selectUserLoginByPhone(phone);
-        System.out.println(user + "--------" + user.getUserId());
+
         if (user != null) {
             String jwtToken = JwtUtils.getJwtToken(user.getUserId());
             stringRedisTemplate.opsForValue().set(user.getUserId(), jwtToken, 1800, TimeUnit.SECONDS);
+
             Map<String, Object> stringObjectMap = new HashMap<>();
             stringObjectMap.put("token", jwtToken);
             stringObjectMap.put("userInfo", user);

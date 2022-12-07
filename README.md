@@ -1,10 +1,11 @@
 本项目为前端vue3 整合后端 spring boot + spring cloud 框架的一个推荐算法项目中的PC端项目（持续更新）
+运用到的技术有 mybatais-plus、redis、nacos 等
 
-#后管直达： https://github.com/HuiGouServe/ds-client-ma.git
+后台管理系统直达： https://github.com/HuiGouServe/ds-client-ma.git
 
-#pc端直达：https://github.com/HuiGouServe/ds-client-pc.git
+pc客户端直达：https://github.com/HuiGouServe/ds-client-pc.git
 
-maven： 3.3.9版本；
+maven： apache-maven-3.6.3
 
 下载nacos： git clone https://github.com/alibaba/nacos.git
 
