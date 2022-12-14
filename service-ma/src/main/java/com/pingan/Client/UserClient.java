@@ -11,6 +11,8 @@ import java.util.Map;
 @FeignClient(name = "service-pc",fallback = UserFeignClient.class)
 @Component
 public interface UserClient {
-    @PostMapping("/user/getCode")
-    public R getCode(@RequestBody Map<String, String> params);
+
+    @PostMapping("/user/getList")
+    public R getList(@RequestBody Map<String, Object> params);
+
 }

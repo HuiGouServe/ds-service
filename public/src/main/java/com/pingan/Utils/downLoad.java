@@ -37,7 +37,7 @@ public class downLoad {
         fileName = UUID.randomUUID() + suffixName;
 
         String format = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        String filePath = "d:/file/" + format + "/";
+        String filePath = "d:/file/imgs/" + format + "/";
         File file = new File(filePath, fileName);
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
@@ -45,7 +45,7 @@ public class downLoad {
         try {
             file.createNewFile();
             uploadFile.transferTo(new File(filePath + fileName));
-            return format + "/" + fileName;
+            return "/imgs/" + format + "/" + fileName;
         } catch (Exception e) {
             e.printStackTrace();
             return "false";

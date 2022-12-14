@@ -1,10 +1,16 @@
 package com.pingan.handler;
 
+
+
+
+import org.apache.commons.io.FileUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -16,13 +22,15 @@ public class WebConfig implements WebMvcConfigurer {
                 ("/user/phoneLogin",
                         "/user/getnum",
                         "/",
-                        "/eureka",
                         "/user/getCode",
                         "/user/phoneRegister",
 //                        "/user/accountRegister",
 //                        "/user/phoneVerify",
 //                        "/user/accountLogin",
 //                        "/user/getUserSig",
-                        "/product/getProductDetail");//可以通过请
+                        "/imgs/**",
+                        "/product/getProductDetail"
+                );//可以通过请求
     }
+
 }

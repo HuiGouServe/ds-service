@@ -77,4 +77,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         IPage<User> userPage = new Page<>(page, pageSize);//参数一是当前页，参数二是每页个数
         return userMapper.selectPage(userPage, wrapper);
     }
+
+
+
 }

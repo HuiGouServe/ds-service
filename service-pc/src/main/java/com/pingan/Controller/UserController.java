@@ -1,7 +1,9 @@
 package com.pingan.Controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.pingan.Mapper.UserLoginMapper;
 import com.pingan.Object.R;
+import com.pingan.Object.User;
 import com.pingan.Object.UserLogin;
 import com.pingan.Utils.JwtUtils;
 import com.pingan.Utils.Result;
@@ -12,9 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import com.pingan.Service.UserService;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -52,6 +53,9 @@ public class UserController {
             UserLogin userLogin = new UserLogin();
             userLogin.setPhone(phone);
             userLogin.setUserId(new publicUtils().generationId("use"));
+            userLogin.setRegistrationTime(Long.toString(new Date().getTime()));
+            userLogin.setShopStatus("0");
+            userLogin.setIndentityStatus("0");
             int i = userService.insertUserLogin(userLogin, "phoneRegister");
             if (i == 1) {
                 return new Result().success("注册成功");
@@ -76,11 +80,9 @@ public class UserController {
             return new Result().fail("验证码已过期或不存在");
         }
         UserLogin user = userService.selectUserLoginByPhone(phone);
-
         if (user != null) {
             String jwtToken = JwtUtils.getJwtToken(user.getUserId());
             stringRedisTemplate.opsForValue().set(user.getUserId(), jwtToken, 1800, TimeUnit.SECONDS);
-
             Map<String, Object> stringObjectMap = new HashMap<>();
             stringObjectMap.put("token", jwtToken);
             stringObjectMap.put("userInfo", user);
@@ -131,6 +133,16 @@ public class UserController {
         } finally {
             return new Result().success("登出成功");
         }
+    }
+
+    @ApiOperation(value = "获取用户参数")
+    @PostMapping("/getList")
+    public R getList(@RequestBody Map<String, String> params) {
+        IPage<User> all = userService.getAll(params);
+        if(all==null){
+            return new Result().fail("暂无数据");
+        }
+        return new Result().success(all);
     }
 
 

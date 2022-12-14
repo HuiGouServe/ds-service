@@ -36,7 +36,7 @@ public class Indentity implements Serializable {
     @ApiModelProperty(value = "身份证姓名")
     private String indentityName;
 
-    @ApiModelProperty(value = "身份证状态：0未认证，1待认证，2已认证，3认证未通过")
+    @ApiModelProperty(value = "身份证状态：0未认证，1认证未通过，2已认证")
     private String indentityStatus;
 
     @NotNull
@@ -59,6 +59,10 @@ public class Indentity implements Serializable {
 
     @ApiModelProperty(value = "修改时间")
     private String updateTime;
+
+    @ApiModelProperty(value = "认证时间")
+    private String indentityTime;
+
 
 
 }

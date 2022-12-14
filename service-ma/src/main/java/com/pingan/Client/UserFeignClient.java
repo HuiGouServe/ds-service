@@ -9,7 +9,7 @@ import java.util.Map;
 @Component
 public class UserFeignClient implements UserClient{
     @Override
-    public R getCode(Map<String, String> params) {
+    public R getList(Map<String, String> params) {
         return new Result().fail("出错了");
     }
 }

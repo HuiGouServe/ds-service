@@ -1,15 +1,25 @@
 package com.pingan.Service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pingan.Mapper.UserDetailMapper;
 import com.pingan.Mapper.UserLoginMapper;
+import com.pingan.Mapper.UserMapper;
+import com.pingan.Object.User;
 import com.pingan.Object.UserDetail;
 import com.pingan.Object.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.pingan.Service.UserService;
+
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -19,6 +29,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDetailMapper userDetailMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public UserDetail findUserDetailById(String id) {
@@ -74,4 +87,38 @@ public class UserServiceImpl implements UserService {
     public UserLogin selectUserLogin(String id) {
         return selectUserLogin(id);
     }
+
+    @Override
+    public IPage<User> getAll(Map<String, String> params) {
+        Integer page = Integer.parseInt(params.get("page"));
+        Integer pageSize = Integer.parseInt(params.get("pageSize"));
+        String userName = params.get("userName");
+        String userAccount = params.get("userAccount");
+        String phone = params.get("phone");
+        String shopStatus = params.get("shopStatus");
+        String startTime = params.get("startTime");
+        String endTime = params.get("endTime");
+
+        QueryWrapper<User> loginWrapper = new QueryWrapper<>();
+
+        if (userName != "") {
+            loginWrapper.like("user_name", userName);
+        }
+        if (userAccount != "") {
+            loginWrapper.like("user_account", userAccount);
+        }
+        if (phone != "") {
+            loginWrapper.like("phone", phone);
+        }
+        if (shopStatus != "") {
+            loginWrapper.like("shop_status", shopStatus);
+        }
+        if (startTime != "" && endTime != "") {
+            loginWrapper.between("registration_time", startTime, endTime);
+        }
+        Page<User> userPage = new Page<>(page, pageSize);
+      return userMapper.findPage(userPage, loginWrapper);
+    }
+
+
 }

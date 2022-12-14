@@ -51,7 +51,20 @@ public class IndentityServiceImpl extends ServiceImpl<IndetityMapper, Indentity>
             indetityMapper.updateById(indentity);
             return "修改成功";
         }
-
-
+    }
+    @Override
+    public IPage<Indentity> selectByPage(int page, int pageSize,String indentityName,String indentityStatus,String startTime,String endTime) {
+        QueryWrapper<Indentity> wrapper = new QueryWrapper<>();
+        if (indentityName != "") {
+            wrapper.like("indentity_name", indentityName);
+        }
+        if (indentityStatus != "") {
+            wrapper.like("indentity_status", indentityStatus);
+        }
+        if (startTime != "" && endTime != "") {
+            wrapper.between("create_time", startTime, endTime);
+        }
+        IPage<Indentity> indentityPage = new Page<>(page, pageSize);//参数一是当前页，参数二是每页个数
+        return indetityMapper.selectPage(indentityPage, wrapper);
     }
 }

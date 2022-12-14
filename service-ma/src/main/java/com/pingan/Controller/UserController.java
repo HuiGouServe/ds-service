@@ -182,5 +182,10 @@ public class UserController {
             return new Result().success(portrait);
         }
     }
+
+    @PostMapping("/getClientList")
+    public R getClientList(@RequestBody Map<String, Object> params) {
+       return userClient.getList(params);
+    }
 }
 

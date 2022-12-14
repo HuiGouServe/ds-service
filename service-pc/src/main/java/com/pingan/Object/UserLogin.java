@@ -48,5 +48,11 @@ public class UserLogin implements Serializable {
     @ApiModelProperty(value = "注册时间")
     private String registrationTime;
 
+    @ApiModelProperty(value = "0：无店铺，1：有店铺")
+    private String shopStatus;
+
+    @ApiModelProperty(value = "0：未认证，1：已认证")
+    private String indentityStatus;
+
 
 }

@@ -17,6 +17,6 @@ import java.util.Map;
  */
 public interface IndentityService extends IService<Indentity> {
   String addOrUpdate(Indentity indentity);
-
+  IPage<Indentity> selectByPage(int page, int pageSize,String indentityName,String indentityStatus,String startTime,String endTime);
 
 }
