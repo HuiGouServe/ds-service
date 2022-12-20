@@ -62,7 +62,6 @@ public class IndentityController {
             indentity.setIndentityTime(Long.toString(new Date().getTime()));
         }
         int insert = indetityMapper.updateById(indentity);
-
         if (insert==1) {
             return new Result().success("修改成功");
         } else {
@@ -108,20 +107,15 @@ public class IndentityController {
     @PostMapping("/revocation")
     public R revocation(@RequestBody Map<String,String> params) {
         Indentity indentity = indetityMapper.selectById(params.get("indentityId"));
-        if(indentity ==null){
+        if (indentity == null) {
             return new Result().fail("您还未申请店铺");
         }
         int num = indetityMapper.deleteById(params.get("indentityId"));
-        if(num==1){
+        if (num == 1) {
             return new Result().success("删除成功");
-        }else {
+        } else {
             return new Result().fail("删除失败");
         }
     }
-
-
-
-
-
 }
 

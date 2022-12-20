@@ -10,11 +10,14 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Mapper
 @Repository
 public interface UserMapper extends BaseMapper<User> {
 
     IPage<User> findPage(IPage<User> page, @Param(Constants.WRAPPER) QueryWrapper<User> wrapper);
-
+    List<User> downByIds(String userIds);
+    List<User> downAll();
 
 }

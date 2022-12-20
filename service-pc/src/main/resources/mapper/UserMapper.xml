@@ -17,4 +17,32 @@
         <!--</where>-->
     </select>
 
+    <select id="downAll" resultType="com.pingan.Object.User">
+        SELECT
+        *
+        FROM
+        `user_login` LEFT join `user_detail`
+        on
+        user_detail.user_id = user_login.user_id
+    </select>
+
+    <select id="downByIds" resultType="com.pingan.Object.User">
+        SELECT
+        *
+        FROM
+        `user_login` LEFT JOIN `user_detail`
+        ON
+        user_detail.user_id = user_login.user_id
+
+        WHERE
+
+        FIND_IN_SET(user_login.user_id,${userIds})
+
+
+        <!--user_login.user_id in (${userIds})-->
+
+
+
+    </select>
+
 </mapper>

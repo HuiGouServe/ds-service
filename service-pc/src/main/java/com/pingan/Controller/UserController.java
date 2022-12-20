@@ -1,5 +1,7 @@
 package com.pingan.Controller;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.converters.longconverter.LongStringConverter;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.pingan.Mapper.UserLoginMapper;
 import com.pingan.Object.R;
@@ -14,7 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import com.pingan.Service.UserService;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -136,13 +142,23 @@ public class UserController {
     }
 
     @ApiOperation(value = "获取用户参数")
-    @PostMapping("/getList")
-    public R getList(@RequestBody Map<String, String> params) {
+    @PostMapping("/getClientList")
+    public R getClientList(@RequestBody Map<String, String> params) {
         IPage<User> all = userService.getAll(params);
         if(all==null){
             return new Result().fail("暂无数据");
         }
         return new Result().success(all);
+    }
+
+    @PostMapping("/downloadClientList")
+    public void downloadClientList(@RequestBody Map<String, List<String>> params, HttpServletResponse response) throws IOException {
+        userService.download(params,response);
+    }
+
+    @PostMapping("/upExcel")
+    public void upExcel(@RequestPart("file") MultipartFile file)  {
+        userService.upExcel(file);
     }
 
 

@@ -1,21 +1,34 @@
 package com.pingan.Controller;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.EasyExcelFactory;
+import com.alibaba.excel.converters.longconverter.LongStringConverter;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.pingan.Client.UserClient;
+
+import com.pingan.Listener.UserExcelListener;
 import com.pingan.Object.R;
 import com.pingan.Object.User;
 import com.pingan.Service.UserService;
 import com.pingan.Utils.Result;
 import com.pingan.Utils.downLoad;
+
+import com.pingan.Utils.publicUtils;
+import feign.Response;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import com.pingan.Mapper.UserMapper;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileNotFoundException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
 
 
 /**
@@ -185,7 +198,50 @@ public class UserController {
 
     @PostMapping("/getClientList")
     public R getClientList(@RequestBody Map<String, Object> params) {
-       return userClient.getList(params);
+       return userClient.getClientList(params);
     }
+
+    @PostMapping("/downloadClientList")
+    public void downloadClientList(@RequestBody Map<String, List<String>> params, HttpServletResponse servletResponse) {
+        new publicUtils().setResponse(servletResponse);
+        Response.Body body = userClient.downloadClientList(params).body();
+        InputStream inputStream;
+        OutputStream outputStream;
+        try {
+            inputStream = body.asInputStream();
+            outputStream = servletResponse.getOutputStream();
+            byte[] bytes = new byte[1024];
+            int len = 0;
+            while ((len = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, len);
+            }
+            inputStream.close();
+            outputStream.close();
+            outputStream.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @PostMapping("/download")
+    public void download(@RequestBody Map<String, List<String>> params, HttpServletResponse response) throws IOException {
+        List<String> userIds = params.get("userIds");
+        List<User> users= new ArrayList<User>();
+        users = userIds.size() != 0?userMapper.selectBatchIds(userIds):userMapper.selectList(null);
+        new publicUtils().exportExcel(users,User.class,response);
+    }
+
+    @PostMapping("/upExcel")
+    public void upExcel(@RequestBody MultipartFile file)  {
+        userService.upExcel(file);
+    }
+
+    @PostMapping("/upClientExcel")
+    public void upClientExcel(@RequestPart("file") MultipartFile file){
+        userClient.upClientExcel(file);
+    };
+
+
+
 }
 

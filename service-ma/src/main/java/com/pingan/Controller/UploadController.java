@@ -16,11 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/file")
-public class uploadController {
-
+public class UploadController {
 
     @PostMapping("/uploadFile")
-    public R uploadFile(@RequestParam("file") MultipartFile file) throws FileNotFoundException {
+    public R uploadFile1(@RequestParam("file") MultipartFile file) throws FileNotFoundException {
         String s = new downLoad().uploadFile(file);
         if (s.equals("false")) {
             return new Result().fail("上传出错了");

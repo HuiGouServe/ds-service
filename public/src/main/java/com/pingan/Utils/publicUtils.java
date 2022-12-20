@@ -1,7 +1,11 @@
 package com.pingan.Utils;
 
+import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSONObject;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.*;
 
 public class publicUtils {
@@ -16,6 +20,25 @@ public class publicUtils {
         }
         return type + Long.toString(new Date().getTime()) + str;
     }
+
+    public HttpServletResponse setResponse(HttpServletResponse response) {
+        response.setCharacterEncoding("utf-8");
+        response.setHeader("Content-disposition", "attachment;filename=" + "excel文档" + ".xlsx");
+        response.addHeader("Access-Control-Expose-Headers", "Content-disposition");
+        return response;
+    }
+
+    public void exportExcel(List<?> list, Class<?> pojoClass, HttpServletResponse response) throws IOException {
+        try {
+            response.setContentType("application/vnd.ms-excel; charset=utf-8");
+            response.setCharacterEncoding("utf-8");
+            response.setHeader("Content-Disposition", "attachment;filename=模板.xlsx");
+            EasyExcel.write(response.getOutputStream(), pojoClass).sheet("模板").doWrite(list);
+        } catch (IOException e) {
+            throw new IOException("下载报表异常");
+        }
+    }
+
 
     public JSONObject MapToJson(Map<String,Object> params) {
         JSONObject jsonObject = new JSONObject();

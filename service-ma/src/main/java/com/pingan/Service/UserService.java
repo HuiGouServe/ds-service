@@ -3,6 +3,7 @@ package com.pingan.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.pingan.Object.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -18,5 +19,5 @@ public interface UserService extends IService<User> {
   Map<String, Object> login(User user);
   int add(String userAccount,String userName,String userPhone,String userRank,String password);
   IPage<User> selectByPage(int page, int pageSize,String userName,String userRank,String startTime,String endTime);
-
+  void upExcel(MultipartFile file);
 }

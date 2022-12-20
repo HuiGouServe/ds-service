@@ -1,5 +1,7 @@
 package com.pingan.Utils;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.converters.longconverter.LongStringConverter;
 import com.alibaba.excel.util.FileUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,6 +18,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -89,4 +93,5 @@ public class downLoad {
         //火狐等其他浏览器统一为ISO-8859-1编码显示
         return new String(filename.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
     }
+
 }

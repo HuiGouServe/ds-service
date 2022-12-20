@@ -1,8 +1,10 @@
 package com.pingan.Service.impl;
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pingan.Listener.UserExcelListener;
 import com.pingan.Object.User;
 import com.pingan.Mapper.UserMapper;
 import com.pingan.Service.UserService;
@@ -13,9 +15,15 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -78,6 +86,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userMapper.selectPage(userPage, wrapper);
     }
 
-
-
+    @Override
+    public void upExcel(MultipartFile file) {
+        InputStream f = null;
+        try {
+            f = file.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        UserExcelListener userExcelListener = new UserExcelListener();
+        EasyExcel.read(f, User.class, userExcelListener).sheet().doRead();
+        List<User> data = userExcelListener.getData();
+        List<User> users = userMapper.selectList(null);
+        for(User i :data){
+            Boolean bool =true;
+            for(User j :users) {
+                if(i.getUserAccount().equals(j.getUserAccount())){
+                    bool=false;
+                }
+            }
+            if(bool){
+                i.setUserId(new publicUtils().generationId("use"));
+                i.setCreateTime(new Date().getTime());
+                userMapper.insert(i);
+            }
+        }
+    }
 }
